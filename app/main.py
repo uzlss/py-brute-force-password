@@ -34,7 +34,7 @@ def hash_finder(index: int, start: int, end: int) -> None:
 
 
 def brute_force_password() -> None:
-    cpus = cpu_count() - 1
+    cpus = max(1, cpu_count() - 1)
     total = 100_000_000
     slicer = math.ceil(total / cpus)
     ranges = [i for i in range(0, total, slicer)] + [total]
@@ -42,7 +42,7 @@ def brute_force_password() -> None:
 
     futures = []
 
-    with ProcessPoolExecutor(cpu_count() - 1) as executor:
+    with ProcessPoolExecutor(cpus) as executor:
         for index, range_ in enumerate(ranges):
             futures.append(executor.submit(
                 hash_finder,
